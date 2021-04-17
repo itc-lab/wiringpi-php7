@@ -5,9 +5,9 @@ php7 WiringPi extension
 Building
 ========
 ```
-install php-dev
+apt-get install php-dev
 phpize
-configure
+./configure
 make
 make install
 ```
