@@ -1,4 +1,4 @@
-/* wiringpi extension for PHP */
+/* WiringPi extension for PHP */
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
@@ -7,6 +7,7 @@
 #include "php.h"
 #include "ext/standard/info.h"
 #include "php_wiringpi.h"
+#include "wiringpi_arginfo.h"
 
 /* For compatibility with older PHP versions */
 #ifndef ZEND_PARSE_PARAMETERS_NONE
@@ -77,8 +78,9 @@ static const struct {
 	NAMEandVALUE( PI_MODEL_3BP ),
 	NAMEandVALUE( PI_MODEL_3AP ),
 	NAMEandVALUE( PI_MODEL_CM3P ),
+#if defined( PI_MODEL_4B )
 	NAMEandVALUE( PI_MODEL_4B ),
-
+#endif
 	NAMEandVALUE( PI_VERSION_1 ),
 	NAMEandVALUE( PI_VERSION_1_1 ),
 	NAMEandVALUE( PI_VERSION_1_2 ),
@@ -101,7 +103,7 @@ PHP_FUNCTION(wiringpi_test1)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 
-	php_printf("The extension %s is loaded and working!\r\n", "wiringpi");
+	php_printf("The extension %s is loaded and working!\r\n", "WiringPi");
 }
 /* }}} */
 
@@ -124,7 +126,7 @@ PHP_FUNCTION(wiringpi_test2)
 }
 /* }}}*/
 
-PHP_METHOD( wiringpi, setmode )
+PHP_METHOD( WiringPi, setmode )
 {
 	zend_long pinmode;
 
@@ -148,7 +150,7 @@ PHP_METHOD( wiringpi, setmode )
 }
 
 
-PHP_METHOD( wiringpi, setup )
+PHP_METHOD( WiringPi, setup )
 {
 	zend_long pinno, pinmode, pud = PUD_OFF;
 
@@ -166,7 +168,7 @@ PHP_METHOD( wiringpi, setup )
 }
 
 
-PHP_METHOD( wiringpi, input )
+PHP_METHOD( WiringPi, input )
 {
 	zend_long pinno;
 
@@ -180,7 +182,7 @@ PHP_METHOD( wiringpi, input )
 }
 
 
-PHP_METHOD( wiringpi, output )
+PHP_METHOD( WiringPi, output )
 {
 	zend_long pinno, value;
 
@@ -195,7 +197,7 @@ PHP_METHOD( wiringpi, output )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiVersion )
+PHP_METHOD( WiringPi, wiringPiVersion )
 {
 	int major, minor;
 	ZEND_PARSE_PARAMETERS_NONE();
@@ -206,35 +208,35 @@ PHP_METHOD( wiringpi, wiringPiVersion )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiSetup )
+PHP_METHOD( WiringPi, wiringPiSetup )
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 	RETURN_LONG( wiringPiSetup() );
 }
 
 
-PHP_METHOD( wiringpi, wiringPiSetupSys )
+PHP_METHOD( WiringPi, wiringPiSetupSys )
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 	RETURN_LONG( wiringPiSetupSys() );
 }
 
 
-PHP_METHOD( wiringpi, wiringPiSetupGpio )
+PHP_METHOD( WiringPi, wiringPiSetupGpio )
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 	RETURN_LONG( wiringPiSetupGpio() );
 }
 
 
-PHP_METHOD( wiringpi, wiringPiSetupPhys )
+PHP_METHOD( WiringPi, wiringPiSetupPhys )
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 	RETURN_LONG( wiringPiSetupPhys() );
 }
 
 
-PHP_METHOD( wiringpi, pinModeAlt )
+PHP_METHOD( WiringPi, pinModeAlt )
 {
 	zend_long pin, mode;
 
@@ -246,7 +248,7 @@ PHP_METHOD( wiringpi, pinModeAlt )
 }
 
 
-PHP_METHOD( wiringpi, pinMode )
+PHP_METHOD( WiringPi, pinMode )
 {
 	zend_long pin, mode;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -257,7 +259,7 @@ PHP_METHOD( wiringpi, pinMode )
 }
 
 
-PHP_METHOD( wiringpi, pullUpDnControl )
+PHP_METHOD( WiringPi, pullUpDnControl )
 {
 	zend_long pin, pud;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -268,7 +270,7 @@ PHP_METHOD( wiringpi, pullUpDnControl )
 }
 
 
-PHP_METHOD( wiringpi, digitalRead )
+PHP_METHOD( WiringPi, digitalRead )
 {
 	zend_long pin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -278,7 +280,7 @@ PHP_METHOD( wiringpi, digitalRead )
 }
 
 
-PHP_METHOD( wiringpi, digitalWrite )
+PHP_METHOD( WiringPi, digitalWrite )
 {
 	zend_long pin, value;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -289,7 +291,7 @@ PHP_METHOD( wiringpi, digitalWrite )
 }
 
 
-PHP_METHOD( wiringpi, digitalRead8 )
+PHP_METHOD( WiringPi, digitalRead8 )
 {
 	zend_long pin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -298,7 +300,7 @@ PHP_METHOD( wiringpi, digitalRead8 )
 	RETURN_LONG( digitalRead8( pin ) );
 }
 
-PHP_METHOD( wiringpi, digitalWrite8 )
+PHP_METHOD( WiringPi, digitalWrite8 )
 {
 	zend_long pin, value;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -309,7 +311,7 @@ PHP_METHOD( wiringpi, digitalWrite8 )
 }
 
 
-PHP_METHOD( wiringpi, pwmWrite )
+PHP_METHOD( WiringPi, pwmWrite )
 {
 	zend_long pin, value;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -320,7 +322,7 @@ PHP_METHOD( wiringpi, pwmWrite )
 }
 
 
-PHP_METHOD( wiringpi, analogRead )
+PHP_METHOD( WiringPi, analogRead )
 {
 	zend_long pin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -330,7 +332,7 @@ PHP_METHOD( wiringpi, analogRead )
 }
 
 
-PHP_METHOD( wiringpi, analogWrite )
+PHP_METHOD( WiringPi, analogWrite )
 {
 	zend_long pin, value;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -341,13 +343,13 @@ PHP_METHOD( wiringpi, analogWrite )
 }
 
 
-PHP_METHOD( wiringpi, piGpioLayout )
+PHP_METHOD( WiringPi, piGpioLayout )
 {
 	RETURN_LONG( piGpioLayout() );
 }
 
 
-PHP_METHOD( wiringpi, piBoardId )
+PHP_METHOD( WiringPi, piBoardId )
 {
 	int model, rev, mem, maker, overVolted;
 	piBoardId( &model, &rev, &mem, &maker, &overVolted );
@@ -360,7 +362,7 @@ PHP_METHOD( wiringpi, piBoardId )
 }
 
 
-PHP_METHOD( wiringpi, wpiPinToGpio )
+PHP_METHOD( WiringPi, wpiPinToGpio )
 {
 	zend_long wpiPin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -370,7 +372,7 @@ PHP_METHOD( wiringpi, wpiPinToGpio )
 }
 
 
-PHP_METHOD( wiringpi, physPinToGpio )
+PHP_METHOD( WiringPi, physPinToGpio )
 {
 	zend_long physPin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -380,7 +382,7 @@ PHP_METHOD( wiringpi, physPinToGpio )
 }
 
 
-PHP_METHOD( wiringpi, setPadDrive )
+PHP_METHOD( WiringPi, setPadDrive )
 {
 	zend_long group, value;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -391,7 +393,7 @@ PHP_METHOD( wiringpi, setPadDrive )
 }
 
 
-PHP_METHOD( wiringpi, getAlt )
+PHP_METHOD( WiringPi, getAlt )
 {
 	zend_long pin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -401,7 +403,7 @@ PHP_METHOD( wiringpi, getAlt )
 }
 
 
-PHP_METHOD( wiringpi, pwmToneWrite )
+PHP_METHOD( WiringPi, pwmToneWrite )
 {
 	zend_long pin, freq;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -412,7 +414,7 @@ PHP_METHOD( wiringpi, pwmToneWrite )
 }
 
 
-PHP_METHOD( wiringpi, pwmSetMode )
+PHP_METHOD( WiringPi, pwmSetMode )
 {
 	zend_long mode;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -422,7 +424,7 @@ PHP_METHOD( wiringpi, pwmSetMode )
 }
 
 
-PHP_METHOD( wiringpi, pwmSetRange )
+PHP_METHOD( WiringPi, pwmSetRange )
 {
 	zend_long range;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -432,7 +434,7 @@ PHP_METHOD( wiringpi, pwmSetRange )
 }
 
 
-PHP_METHOD( wiringpi, pwmSetClock )
+PHP_METHOD( WiringPi, pwmSetClock )
 {
 	zend_long divisor;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -442,7 +444,7 @@ PHP_METHOD( wiringpi, pwmSetClock )
 }
 
 
-PHP_METHOD( wiringpi, gpioClockSet )
+PHP_METHOD( WiringPi, gpioClockSet )
 {
 	zend_long pin, freq;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -453,21 +455,21 @@ PHP_METHOD( wiringpi, gpioClockSet )
 }
 
 
-PHP_METHOD( wiringpi, digitalReadByte )
+PHP_METHOD( WiringPi, digitalReadByte )
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 	RETURN_LONG( digitalReadByte() );
 }
 
 
-PHP_METHOD( wiringpi, digitalReadByte2 )
+PHP_METHOD( WiringPi, digitalReadByte2 )
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 	RETURN_LONG( digitalReadByte2() );
 }
 
 
-PHP_METHOD( wiringpi, digitalWriteByte )
+PHP_METHOD( WiringPi, digitalWriteByte )
 {
 	zend_long value;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -477,7 +479,7 @@ PHP_METHOD( wiringpi, digitalWriteByte )
 }
 
 
-PHP_METHOD( wiringpi, digitalWriteByte2 )
+PHP_METHOD( WiringPi, digitalWriteByte2 )
 {
 	zend_long value;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -487,7 +489,7 @@ PHP_METHOD( wiringpi, digitalWriteByte2 )
 }
 
 
-PHP_METHOD( wiringpi, softPwmCreate )
+PHP_METHOD( WiringPi, softPwmCreate )
 {
 	zend_long pin, value, range;
 
@@ -502,7 +504,7 @@ PHP_METHOD( wiringpi, softPwmCreate )
 }
 
 
-PHP_METHOD( wiringpi, softPwmWrite )
+PHP_METHOD( WiringPi, softPwmWrite )
 {
 	zend_long pin, value;
 
@@ -515,7 +517,7 @@ PHP_METHOD( wiringpi, softPwmWrite )
 }
 
 
-PHP_METHOD( wiringpi, softPwmStop )
+PHP_METHOD( WiringPi, softPwmStop )
 {
 	zend_long pin;
 
@@ -527,7 +529,7 @@ PHP_METHOD( wiringpi, softPwmStop )
 }
 
 
-PHP_METHOD( wiringpi, pcf8574Setup )
+PHP_METHOD( WiringPi, pcf8574Setup )
 {
 	zend_long pinBase, i2cAddress;
 
@@ -539,7 +541,7 @@ PHP_METHOD( wiringpi, pcf8574Setup )
 }
 
 
-PHP_METHOD( wiringpi, pcf8591Setup )
+PHP_METHOD( WiringPi, pcf8591Setup )
 {
 	zend_long pinBase, i2cAddress;
 
@@ -551,7 +553,7 @@ PHP_METHOD( wiringpi, pcf8591Setup )
 }
 
 
-PHP_METHOD( wiringpi, softServoWrite )
+PHP_METHOD( WiringPi, softServoWrite )
 {
 	zend_long pin, value;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -564,7 +566,7 @@ PHP_METHOD( wiringpi, softServoWrite )
 }
 
 
-PHP_METHOD( wiringpi, softServoSetup )
+PHP_METHOD( WiringPi, softServoSetup )
 {
 	zend_long p0, p1, p2, p3, p4, p5, p6, p7;
 	ZEND_PARSE_PARAMETERS_START( 7, 7 )
@@ -581,7 +583,7 @@ PHP_METHOD( wiringpi, softServoSetup )
 }
 
 
-PHP_METHOD( wiringpi, softToneCreate )
+PHP_METHOD( WiringPi, softToneCreate )
 {
 	zend_long pin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -591,7 +593,7 @@ PHP_METHOD( wiringpi, softToneCreate )
 }
 
 
-PHP_METHOD( wiringpi, softToneStop )
+PHP_METHOD( WiringPi, softToneStop )
 {
 	zend_long pin;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -602,7 +604,7 @@ PHP_METHOD( wiringpi, softToneStop )
 }
 
 
-PHP_METHOD( wiringpi, softToneWrite )
+PHP_METHOD( WiringPi, softToneWrite )
 {
 	zend_long pin, freq;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -614,7 +616,7 @@ PHP_METHOD( wiringpi, softToneWrite )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CRead )
+PHP_METHOD( WiringPi, wiringPiI2CRead )
 {
 	zend_long fd;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
@@ -624,7 +626,7 @@ PHP_METHOD( wiringpi, wiringPiI2CRead )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CReadReg8 )
+PHP_METHOD( WiringPi, wiringPiI2CReadReg8 )
 {
 	zend_long fd, reg;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -635,7 +637,7 @@ PHP_METHOD( wiringpi, wiringPiI2CReadReg8 )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CReadReg16 )
+PHP_METHOD( WiringPi, wiringPiI2CReadReg16 )
 {
 	zend_long fd, reg;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -646,7 +648,7 @@ PHP_METHOD( wiringpi, wiringPiI2CReadReg16 )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CWrite )
+PHP_METHOD( WiringPi, wiringPiI2CWrite )
 {
 	zend_long fd, data;
 	ZEND_PARSE_PARAMETERS_START( 2, 2 )
@@ -657,7 +659,7 @@ PHP_METHOD( wiringpi, wiringPiI2CWrite )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CWriteReg8 )
+PHP_METHOD( WiringPi, wiringPiI2CWriteReg8 )
 {
 	zend_long fd, reg, data;
 	ZEND_PARSE_PARAMETERS_START( 3, 3 )
@@ -669,7 +671,7 @@ PHP_METHOD( wiringpi, wiringPiI2CWriteReg8 )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CWriteReg16 ) {
+PHP_METHOD( WiringPi, wiringPiI2CWriteReg16 ) {
 	zend_long fd, reg, data;
 	ZEND_PARSE_PARAMETERS_START( 3, 3 )
 		Z_PARAM_LONG( fd )
@@ -680,7 +682,7 @@ PHP_METHOD( wiringpi, wiringPiI2CWriteReg16 ) {
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CSetupInterface )
+PHP_METHOD( WiringPi, wiringPiI2CSetupInterface )
 {
 	zend_string* device;
 	zend_long devId;
@@ -692,7 +694,7 @@ PHP_METHOD( wiringpi, wiringPiI2CSetupInterface )
 }
 
 
-PHP_METHOD( wiringpi, wiringPiI2CSetup ) {
+PHP_METHOD( WiringPi, wiringPiI2CSetup ) {
 	zend_long devId;
 	ZEND_PARSE_PARAMETERS_START( 1, 1 )
 		Z_PARAM_LONG( devId )
@@ -701,7 +703,7 @@ PHP_METHOD( wiringpi, wiringPiI2CSetup ) {
 }
 
 
-PHP_METHOD( wiringpi, getConstants )
+PHP_METHOD( WiringPi, getConstants )
 {
 	int n;
 	char name[120];
@@ -714,67 +716,9 @@ PHP_METHOD( wiringpi, getConstants )
 }
 
 
-const zend_function_entry wiringpi_methods[] = {
-	PHP_ME( wiringpi, setmode,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, setup,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, input,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, output,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiVersion,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiSetup,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiSetupSys,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiSetupGpio,	NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiSetupPhys,	NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pinModeAlt,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pinMode,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pullUpDnControl,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalRead,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalWrite,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalRead8,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalWrite8,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pwmWrite,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, analogRead,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, analogWrite,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, piGpioLayout,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, piBoardId,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wpiPinToGpio,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, physPinToGpio,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, setPadDrive,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, getAlt,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pwmToneWrite,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pwmSetMode,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pwmSetRange,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pwmSetClock,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, gpioClockSet,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalReadByte,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalReadByte2,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalWriteByte,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, digitalWriteByte2,	NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softPwmCreate,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softPwmWrite,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softPwmStop,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pcf8574Setup,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, pcf8591Setup,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softServoWrite,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softServoSetup,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softToneCreate,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softToneStop,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, softToneWrite,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, getConstants,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-
-	PHP_ME( wiringpi, wiringPiI2CRead,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiI2CReadReg8,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiI2CReadReg16,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiI2CWrite,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiI2CWriteReg8,			NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiI2CWriteReg16,		NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiI2CSetupInterface,	NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_ME( wiringpi, wiringPiI2CSetup,				NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC )
-	PHP_FE_END	/* Must be the last line in myext_functions[] */
-};
-
 /* {{{ PHP_RINIT_FUNCTION
  */
-PHP_RINIT_FUNCTION(wiringpi)
+PHP_RINIT_FUNCTION(WiringPi)
 {
 #if defined(ZTS) && defined(COMPILE_DL_WIRINGPI)
 	ZEND_TSRMLS_CACHE_UPDATE();
@@ -790,10 +734,10 @@ PHP_RINIT_FUNCTION(wiringpi)
 /* }}} */
 
 /* {{{ PHP_MINIT_FUNCTION */
-static PHP_MINIT_FUNCTION(wiringpi)
+static PHP_MINIT_FUNCTION(WiringPi)
 {
 	zend_class_entry ce;
-	INIT_CLASS_ENTRY( ce, WIRINGPI_CLASS_NAME, wiringpi_methods );
+	INIT_CLASS_ENTRY( ce, WIRINGPI_CLASS_NAME, class_WiringPi_methods);
 	wiringpi_class_entry = zend_register_internal_class(&ce);
 	int n;
 
@@ -807,7 +751,7 @@ static PHP_MINIT_FUNCTION(wiringpi)
 
 /* {{{ PHP_MINFO_FUNCTION
  */
-PHP_MINFO_FUNCTION(wiringpi)
+PHP_MINFO_FUNCTION(WiringPi)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "Variable", "Value");
@@ -817,36 +761,17 @@ PHP_MINFO_FUNCTION(wiringpi)
 }
 /* }}} */
 
-/* {{{ arginfo
- */
-ZEND_BEGIN_ARG_INFO(arginfo_wiringpi_test1, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO(arginfo_wiringpi_test2, 0)
-	ZEND_ARG_INFO(0, str)
-ZEND_END_ARG_INFO()
-/* }}} */
-
-/* {{{ wiringpi_functions[]
- */
-static const zend_function_entry wiringpi_functions[] = {
-	PHP_FE(wiringpi_test1,		arginfo_wiringpi_test1)
-	PHP_FE(wiringpi_test2,		arginfo_wiringpi_test2)
-	PHP_FE_END
-};
-/* }}} */
-
 /* {{{ wiringpi_module_entry
  */
 zend_module_entry wiringpi_module_entry = {
 	STANDARD_MODULE_HEADER,
 	WIRINGPI_CLASS_NAME,			/* Extension name */
-	wiringpi_functions,				/* zend_function_entry */
-	PHP_MINIT(wiringpi),			/* PHP_MINIT - Module initialization */
+	ext_functions,					/* zend_function_entry */
+	PHP_MINIT(WiringPi),			/* PHP_MINIT - Module initialization */
 	NULL,							/* PHP_MSHUTDOWN - Module shutdown */
-	PHP_RINIT(wiringpi),			/* PHP_RINIT - Request initialization */
+	PHP_RINIT(WiringPi),			/* PHP_RINIT - Request initialization */
 	NULL,							/* PHP_RSHUTDOWN - Request shutdown */
-	PHP_MINFO(wiringpi),			/* PHP_MINFO - Module info */
+	PHP_MINFO(WiringPi),			/* PHP_MINFO - Module info */
 	PHP_WIRINGPI_VERSION,			/* Version */
 	STANDARD_MODULE_PROPERTIES
 };
