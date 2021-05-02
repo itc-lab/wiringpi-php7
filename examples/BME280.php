@@ -22,6 +22,11 @@
 		protected $dig_H6;
 		protected $t_fine = 0;
 
+		function __construct( $addr ) {
+			$this->fd = WiringPi::wiringPiI2CSetup( $addr );
+			$this->setup();
+		}
+
 		function bme280( $addr ) {
 			$this->fd = WiringPi::wiringPiI2CSetup( $addr );
 			$this->setup();
